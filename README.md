@@ -5,10 +5,11 @@ Thailand stock web scraping &amp; LLM-based analysis
 - docker compose
 
 # 1 Airflow
-1.1 Setup Airflow
+1.1 Setup Airflow & Spark
 ```bash
 # Do this only once.
 cd airflow
+docker compose build
 docker compose up airflow-init # If "WARNING!!!" occured, Please set Memory limit of Docker Resources to at least 5 GB
 ```
 
@@ -20,10 +21,10 @@ cd airflow
 docker compose up
 ```
 
-1.3 Spark test running hello-world
+1.3 Spark test running hello_world
 ```bash
 # Open new Terminal #2
-./script/spark_submit.sh hello-world.py
+./script/spark_submit.sh hello_world.py
 # +---+-------+
 # | id|message|
 # +---+-------+

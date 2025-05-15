@@ -8,7 +8,7 @@ ssh_hook = SSHHook(
     remote_host='spark-master',
     port=22,
     username='root',
-    key_file='./config/id_ed25519',
+    key_file='./config/demo_sshkey',
     cmd_timeout=None
 )
 
@@ -24,7 +24,7 @@ with DAG(
     hell_wolrd = SSHOperator(
         task_id='hello_world',
         ssh_hook=ssh_hook,
-        command='/opt/spark/submit.sh hello-world.py'
+        command='/opt/spark/submit.sh hello_world.py'
     )
 
     # Define the task dependencies
