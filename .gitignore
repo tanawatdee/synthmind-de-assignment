@@ -176,3 +176,19 @@ cython_debug/
 # script log
 script/*_log/
 script/*_tmp/
+
+# spark
+spark_conf/
+spark_data/
+spark_logs/
+spark_ssh/
+
+spark*.tgz
+spark*.tar.gz
+
+.env.spark
+
+# airflow
+airflow/config/
+airflow/logs/
+airflow/plugins/
