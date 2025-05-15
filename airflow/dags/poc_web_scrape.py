@@ -9,6 +9,8 @@ from time import sleep
 
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
+from airflow.providers.ssh.hooks.ssh import SSHHook
+from airflow.providers.ssh.operators.ssh import SSHOperator
 from datetime import datetime
 
 
@@ -504,6 +506,17 @@ def poc_web_scrape_4(ds, **kwargs):
         writer.writerows(raw_news_data)
 
 
+# ===
+# DAG
+# ===
+ssh_hook = SSHHook(
+    remote_host='spark-master',
+    port=22,
+    username='root',
+    key_file='./config/demo_sshkey',
+    cmd_timeout=None
+)
+
 with DAG(
     'poc_web_scrape',
     description='POC Web Scrape',
@@ -538,3 +551,11 @@ with DAG(
         python_callable=poc_web_scrape_4, 
         dag=dag,
     )
+
+    op_poc_clean_data_1 = SSHOperator(
+        task_id='poc_clean_data_1',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh hello_world.py'
+    )
+
+    op_poc_web_scrape_1 >> op_poc_clean_data_1
