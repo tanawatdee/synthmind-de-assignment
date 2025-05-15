@@ -4,20 +4,25 @@ Thailand stock web scraping &amp; LLM-based analysis
 # Prerequisite
 - docker compose
 
-# Setup spark
+# 1 Airflow
+1.1 Setup Airflow
 ```bash
-cd spark-cluster
-docker compose build
+# Do this only once.
+cd airflow
+docker compose up airflow-init # If "WARNING!!!" occured, Please set Memory limit of Docker Resources to at least 5 GB
 ```
 
-# Start Spark cluster 
+1.2 Start Airflow & Spark
 ```bash
-cd spark-cluster
+# Open new Terminal #1
+# Keep this running forever.
+cd airflow
 docker compose up
 ```
 
-# Spark test running hello-world
+1.3 Spark test running hello-world
 ```bash
+# Open new Terminal #2
 ./script/spark_submit.sh hello-world.py
 # +---+-------+
 # | id|message|
@@ -26,3 +31,10 @@ docker compose up
 # |  2|  World|
 # +---+-------+
 ```
+
+# 2 UI
+2.1 Spark UI
+  - http://localhost:8080
+
+2.2 Airflow UI
+  - http://localhost:8081 (user: airflow, pass: airflow)
