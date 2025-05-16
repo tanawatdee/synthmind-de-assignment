@@ -11,4 +11,4 @@ set +a
 
 /opt/spark/bin/spark-submit --master spark://spark-master:7077 --deploy-mode client /opt/spark/apps/$1 $@
 
-exit 0
+exit $?

@@ -2,6 +2,14 @@ import sys
 import argparse
 
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import (
+    col, 
+    substring,
+    lit,
+    trim,
+    replace,
+    translate
+)
 
 print('sys.argv')
 print(sys.argv)
@@ -17,9 +25,20 @@ if args.date:
 print('execution_date')
 print(execution_date)
 
+read_path  = f'./data/3_raw_news/01_set/{execution_date}'
+write_path = f'./data/4_clean_news/01_set/{execution_date}'
+
 spark = (
     SparkSession
         .builder
         .appName('POC Clean data 1')
         .getOrCreate()
 )
+
+df = spark.read.options(header=True, multiLine=True).csv(read_path)
+df2 = df \
+ .withColumn('news_datetime',  substring('news_datetime', 1, 10)) \
+ .withColumn('news_content',   trim(translate('news_content', '\n', ' '))) \
+ .withColumn('execution_date', lit(execution_date))
+
+df2.write.mode("overwrite").option("header", True).csv(write_path)

@@ -552,10 +552,10 @@ with DAG(
         dag=dag,
     )
 
-    op_poc_clean_data_1 = SSHOperator(
-        task_id='poc_clean_data_1',
-        ssh_hook=ssh_hook,
-        command='/opt/spark/submit.sh poc_clean_data_1.py --date {{ds}}'
-    )
+    # op_poc_clean_data_1 = SSHOperator(
+    #     task_id='poc_clean_data_1',
+    #     ssh_hook=ssh_hook,
+    #     command='/opt/spark/submit.sh poc_clean_data_1.py --date {{ds}}'
+    # )
 
-    op_poc_web_scrape_1 >> op_poc_clean_data_1
+    # op_poc_web_scrape_1 >> op_poc_clean_data_1
