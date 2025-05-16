@@ -520,8 +520,8 @@ ssh_hook = SSHHook(
 with DAG(
     'poc_web_scrape',
     description='POC Web Scrape',
-    schedule_interval=None,
-    start_date=datetime(2021, 1, 1),
+    schedule_interval='@daily',
+    start_date=datetime(2025, 5, 12),
     catchup=False
 ) as dag:
     op_poc_web_scrape_1 = PythonOperator(
@@ -555,7 +555,7 @@ with DAG(
     op_poc_clean_data_1 = SSHOperator(
         task_id='poc_clean_data_1',
         ssh_hook=ssh_hook,
-        command='/opt/spark/submit.sh hello_world.py'
+        command='/opt/spark/submit.sh poc_clean_data_1.py --date {{ds}}'
     )
 
     op_poc_web_scrape_1 >> op_poc_clean_data_1
