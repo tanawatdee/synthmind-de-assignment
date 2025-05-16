@@ -25,13 +25,13 @@ if args.date:
 print('execution_date')
 print(execution_date)
 
-read_path  = f'./data/3_raw_news/01_set/{execution_date}'
-write_path = f'./data/4_clean_news/01_set/{execution_date}'
+read_path  = f'./data/3_raw_news/04_kaohoon/{execution_date}'
+write_path = f'./data/4_clean_news/04_kaohoon/{execution_date}'
 
 spark = (
     SparkSession
         .builder
-        .appName('POC Clean data 1')
+        .appName('POC Clean data 4')
         .getOrCreate()
 )
 
@@ -39,7 +39,7 @@ df = spark.read.options(header=True, multiLine=True, escape='"').csv(read_path)
 df2 = df \
  .withColumn('news_datetime',  substring('news_datetime', 1, 10)) \
  .withColumn('news_content',   trim(translate('news_content', '\n', ' '))) \
- .withColumn('news agency',    lit('set')) \
+ .withColumn('news agency',    lit('kaohoon')) \
  .withColumn('execution_date', lit(execution_date))
 
 df2.write.mode("overwrite").options(header=True, multiLine=True, escape='"').csv(write_path)
