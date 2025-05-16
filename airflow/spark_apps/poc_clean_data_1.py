@@ -39,6 +39,7 @@ df = spark.read.options(header=True, multiLine=True).csv(read_path)
 df2 = df \
  .withColumn('news_datetime',  substring('news_datetime', 1, 10)) \
  .withColumn('news_content',   trim(translate('news_content', '\n', ' '))) \
+ .withColumn('news agency',    lit('set')) \
  .withColumn('execution_date', lit(execution_date))
 
 df2.write.mode("overwrite").option("header", True).csv(write_path)
