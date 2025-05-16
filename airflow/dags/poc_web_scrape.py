@@ -522,7 +522,8 @@ with DAG(
     description='POC Web Scrape',
     schedule_interval='@daily',
     start_date=datetime(2025, 5, 12),
-    catchup=False
+    catchup=False,
+    max_active_runs=1 # due to resources limitation (not enough RAM)
 ) as dag:
     op_poc_web_scrape_1 = PythonOperator(
         task_id=f"poc_web_scrape_1", 
@@ -551,11 +552,3 @@ with DAG(
         python_callable=poc_web_scrape_4, 
         dag=dag,
     )
-
-    # op_poc_clean_data_1 = SSHOperator(
-    #     task_id='poc_clean_data_1',
-    #     ssh_hook=ssh_hook,
-    #     command='/opt/spark/submit.sh poc_clean_data_1.py --date {{ds}}'
-    # )
-
-    # op_poc_web_scrape_1 >> op_poc_clean_data_1

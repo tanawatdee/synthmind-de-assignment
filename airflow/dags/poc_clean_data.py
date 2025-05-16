@@ -30,10 +30,31 @@ with DAG(
     description='POC Clean data',
     schedule_interval='@daily',
     start_date=datetime(2025, 5, 12),
-    catchup=False
+    catchup=False,
+    max_active_runs=1 # due to resources limitation (not enough RAM)
 ) as dag:
     op_poc_clean_data_1 = SSHOperator(
         task_id='poc_clean_data_1',
         ssh_hook=ssh_hook,
         command='/opt/spark/submit.sh poc_clean_data_1.py --date {{ds}}'
     )
+
+    op_poc_clean_data_2 = SSHOperator(
+        task_id='poc_clean_data_2',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_clean_data_2.py --date {{ds}}'
+    )
+
+    op_poc_clean_data_3 = SSHOperator(
+        task_id='poc_clean_data_3',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_clean_data_3.py --date {{ds}}'
+    )
+
+    op_poc_clean_data_4 = SSHOperator(
+        task_id='poc_clean_data_4',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_clean_data_4.py --date {{ds}}'
+    )
+
+    # op_poc_clean_data_1 >> op_poc_clean_data_2 >> op_poc_clean_data_3 >> op_poc_clean_data_4

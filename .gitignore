@@ -189,3 +189,6 @@ spark*.tar.gz
 # airflow
 airflow/logs/
 airflow/plugins/
+
+# macOS
+.DS_store
