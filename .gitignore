@@ -184,8 +184,6 @@ spark_logs/
 spark*.tgz
 spark*.tar.gz
 
-.env.spark
-
 # airflow
 airflow/logs/
 airflow/plugins/
