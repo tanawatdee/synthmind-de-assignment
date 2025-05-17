@@ -34,7 +34,7 @@ if args.date:
 print('execution_date')
 print(execution_date)
 
-login(token='xxx')
+login(token='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')
 
 read_paths  = [
     f'./data/4_clean_news/03_seten/{execution_date}',

@@ -30,7 +30,7 @@ if args.date:
 print('execution_date')
 print(execution_date)
 
-login(token='xxx')
+login(token='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')
 
 read_path  = f'./data/5_sentiment/01_en/{execution_date}'
 write_dir  = f'./data/6_key_topics/01_en/{execution_date}'
@@ -68,7 +68,16 @@ model_name = "ml6team/keyphrase-extraction-kbir-inspec"
 extractor = KeyphraseExtractionPipeline(model=model_name)
 
 def predict_key_topics(text):
-    return extractor(text)
+    print('news_text')
+    print(text)
+
+    news_key_topics = extractor(text)
+
+    print('news_key_topics')
+    print(news_key_topics)
+    print('')
+
+    return news_key_topics
 
 df['news_key_topics'] = df['news_text'].apply(predict_key_topics)
 print(df.head())

@@ -22,10 +22,17 @@ with DAG(
     schedule_interval='@daily',
     start_date=datetime(2025, 5, 12),
     catchup=False,
+    concurrency=1,
     max_active_runs=1 # due to resources limitation (not enough RAM)
 ) as dag:
     op_poc_sentiment_en = SSHOperator(
         task_id='poc_sentiment_en',
         ssh_hook=ssh_hook,
         command='/opt/spark/submit.sh poc_sentiment_en.py --date {{ds}}'
+    )
+
+    op_poc_sentiment_th = SSHOperator(
+        task_id='poc_sentiment_th',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_sentiment_th.py --date {{ds}}'
     )

@@ -536,14 +536,17 @@ ssh_hook = SSHHook(
 )
 
 with DAG(
-    'poc_web_scrape',
-    description='POC Web Scrape',
+    'advanc_stock',
+    description='ADVANC stock news articles',
     schedule_interval='@daily',
     start_date=datetime(2025, 5, 12),
     catchup=False,
     concurrency=1,
     max_active_runs=1 # due to resources limitation (not enough RAM)
 ) as dag:
+    # ===
+    # 1. Web scraping
+    # ===
     op_poc_web_scrape_1 = PythonOperator(
         task_id=f"poc_web_scrape_1", 
         provide_context=True,
@@ -571,3 +574,64 @@ with DAG(
         python_callable=poc_web_scrape_4, 
         dag=dag,
     )
+
+    # ===
+    # 2. Data cleaning
+    # ===
+    op_poc_clean_data_1 = SSHOperator(
+        task_id='poc_clean_data_1',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_clean_data_1.py --date {{ds}}'
+    )
+
+    op_poc_clean_data_2 = SSHOperator(
+        task_id='poc_clean_data_2',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_clean_data_2.py --date {{ds}}'
+    )
+
+    op_poc_clean_data_3 = SSHOperator(
+        task_id='poc_clean_data_3',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_clean_data_3.py --date {{ds}}'
+    )
+
+    op_poc_clean_data_4 = SSHOperator(
+        task_id='poc_clean_data_4',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_clean_data_4.py --date {{ds}}'
+    )
+
+    # ===
+    # 3. Sentimental analysis
+    # ===
+    op_poc_sentiment_en = SSHOperator(
+        task_id='poc_sentiment_en',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_sentiment_en.py --date {{ds}}'
+    )
+
+    op_poc_sentiment_th = SSHOperator(
+        task_id='poc_sentiment_th',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_sentiment_th.py --date {{ds}}'
+    )
+
+    # ===
+    # 4. Key topics extraction
+    # ===
+    op_poc_key_topics_en = SSHOperator(
+        task_id='poc_key_topics_en',
+        ssh_hook=ssh_hook,
+        command='/opt/spark/submit.sh poc_key_topics_en.py --date {{ds}}'
+    )
+
+    # ===
+    # Define Task Dependencies
+    # ===
+    op_poc_web_scrape_1 >> op_poc_clean_data_1 >> op_poc_sentiment_th
+    op_poc_web_scrape_2 >> op_poc_clean_data_2 >> op_poc_sentiment_th
+    op_poc_web_scrape_3 >> op_poc_clean_data_3 >> op_poc_sentiment_en >> op_poc_key_topics_en
+    op_poc_web_scrape_4 >> op_poc_clean_data_4 >> op_poc_sentiment_en >> op_poc_key_topics_en
+
+

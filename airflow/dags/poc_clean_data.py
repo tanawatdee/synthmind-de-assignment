@@ -31,6 +31,7 @@ with DAG(
     schedule_interval='@daily',
     start_date=datetime(2025, 5, 12),
     catchup=False,
+    concurrency=1,
     max_active_runs=1 # due to resources limitation (not enough RAM)
 ) as dag:
     op_poc_clean_data_1 = SSHOperator(
