@@ -62,5 +62,8 @@ docker compose up
 ![TH Sentiment](/img/th-sentiment.png)
 ![EN Key topics](/img/en-key-topics.png)
 
+# 4 Results
+![Airflow 2](/img/airflow-2.png)
+### The result data produced by me can be found in the file named "result_data.zip"
 ### Data file structure (will be stored in airflow/ directory after finished running the DAGs)
 ![Data file structure](/img/data-file-structure.png)
