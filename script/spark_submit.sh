@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PWD="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
+SWD="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
 
-cd "$PWD/../spark-cluster"
+cd "$SWD/../airflow"
 
 [ ! -z "$1" ] || exit 64
 

@@ -1,14 +1,14 @@
 #!/bin/bash
 
-PWD="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
+SWD="$( cd "$(dirname "$0")" > /dev/null 2>&1 ; pwd -P )"
 
-cd "$PWD"
-echo $PWD
+cd "$SWD"
+echo $SWD
 
 set -a
 . ./conf/.env
 set +a
 
-/opt/spark/bin/spark-submit --master spark://spark-master:7077 --deploy-mode client /opt/spark/apps/$1
+/opt/spark/bin/spark-submit --master spark://spark-master:7077 --deploy-mode client /opt/spark/apps/$1 $@
 
-exit 0
+exit $?
