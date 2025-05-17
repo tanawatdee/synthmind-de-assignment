@@ -57,10 +57,6 @@ df['news_text'] = df['news_content'].fillna('') + ' ' + df['news_title']
 
 print(df.head())
 
-df.to_csv(write_path, index=False, mode='w')
-
-exit(0)
-
 # ===
 # Model #1
 # ===
